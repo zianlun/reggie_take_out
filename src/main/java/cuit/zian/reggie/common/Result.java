@@ -32,6 +32,10 @@ public class Result<T> {
         this.data = data;
     }
 
+    public static <T> Result<T> success() {
+        return new Result<T>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMsg(), null);
+    }
+
     public static <T> Result<T> success(T data) {
         return new Result<T>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMsg(),data);
     }
@@ -69,6 +73,10 @@ public class Result<T> {
     //未登录 token过期
     public static <T> Result<T> unauthorized() {
         return Result.failed(ResultCode.UNAUTHORIZED);
+    }
+
+    public static <T> Result<T> unauthorized(String msg) {
+        return Result.failed(ResultCode.UNAUTHORIZED, msg);
     }
 
     //权限错误

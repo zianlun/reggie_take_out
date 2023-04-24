@@ -4,23 +4,28 @@ import cuit.zian.reggie.common.Result;
 import cuit.zian.reggie.dto.LoginParam;
 import cuit.zian.reggie.pojo.Employee;
 import cuit.zian.reggie.service.EmployeeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 
 @RestController
+@Slf4j
 @RequestMapping("/employee")
 public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Value("${employee.init-password}")
+    private String initPassword;
 
     @PostMapping("/login")
     public Result<Employee> login(@RequestBody LoginParam loginParam, HttpServletRequest request) {
@@ -60,5 +65,32 @@ public class EmployeeController {
         //清理session中的员工id
         request.getSession().removeAttribute("employee");
         return Result.success("注销成功");
+    }
+    @GetMapping("/page")
+    public Result<List<Employee>> page(Integer page, Integer size){
+        return Result.success("请求成功");
+    }
+
+    @PostMapping
+    public Result<String> update(HttpServletRequest request, @RequestBody Employee employee){
+        log.info("员工信息: {}",employee);
+        /*
+        * 数据处理
+        * 设置初始密码
+        * 设置创建时间
+        * 设置更新时间
+        * 设置创建者id
+        * 设置更新者id
+        * */
+        employee.setPassword(DigestUtils.md5DigestAsHex(initPassword.getBytes()));
+        employee.setCreateTime(new Date());
+        employee.setUpdateTime(new Date());
+        employee.setCreateUser((Long)request.getSession().getAttribute("employeeId"));
+        employee.setUpdateUser((Long)request.getSession().getAttribute("employeeId"));
+        int result =  employeeService.saveEmployee(employee);
+        if(result <= 0) {
+            return Result.failed("创建员工失败");
+        }
+        return Result.success("添加员工成功");
     }
 }

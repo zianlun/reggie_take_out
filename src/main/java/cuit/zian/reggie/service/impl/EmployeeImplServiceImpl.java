@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class EmployeeImplServiceImpl implements EmployeeService {
@@ -23,4 +24,12 @@ public class EmployeeImplServiceImpl implements EmployeeService {
         criteria.andUsernameEqualTo(username);
         return employeeMapper.selectByExample(example);
     }
+
+    @Override
+    public int saveEmployee(Employee employee) {
+        Long employeeId = (long) Math.abs(UUID.randomUUID().hashCode());
+        employee.setId(employeeId);
+        return employeeMapper.insert(employee);
+    }
+
 }

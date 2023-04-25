@@ -1,5 +1,6 @@
 package cuit.zian.reggie.controller;
 
+import com.github.pagehelper.PageInfo;
 import cuit.zian.reggie.common.Result;
 import cuit.zian.reggie.dto.LoginParam;
 import cuit.zian.reggie.pojo.Employee;
@@ -67,8 +68,11 @@ public class EmployeeController {
         return Result.success("注销成功");
     }
     @GetMapping("/page")
-    public Result<List<Employee>> page(Integer page, Integer size){
-        return Result.success("请求成功");
+    public Result<PageInfo<Employee>> page(@RequestParam(value="page", defaultValue = "1") Integer page,
+                                       @RequestParam( value="pageSize ", defaultValue = "5") Integer pageSize ,
+                                       @RequestParam(value="name", required = false) String username){
+        PageInfo<Employee> pageInfo =  employeeService.queryEmployeeToPage(page, pageSize, username);
+        return Result.success(pageInfo);
     }
 
     @PostMapping

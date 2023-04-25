@@ -92,7 +92,7 @@
       </el-table>
       <el-pagination
         class="pageList"
-        :page-sizes="[10, 20, 30, 40]"
+        :page-sizes="[5, 10, 20, 30, 40]"
         :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="counts"
@@ -118,7 +118,7 @@
              input: '',
              counts: 0,
              page: 1,
-             pageSize: 10,
+             pageSize: 5,
              tableData : [],
              id : '',
              status : '',
@@ -139,9 +139,9 @@
               name: this.input ? this.input : undefined
             }
             await getMemberList(params).then(res => {
-              console.log(res.data)
-              if (String(res.code) === '1') {
-                this.tableData = res.data.records || []
+              console.log(res)
+              if (String(res.code) === '200') {
+                this.tableData = res.data.list || []
                 this.counts = res.data.total
               }
             }).catch(err => {

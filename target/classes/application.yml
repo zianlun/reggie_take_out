@@ -9,7 +9,7 @@ spring:
       url: jdbc:mysql://localhost:3306/reggie?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: root
       password: 123456
-mybatis-plus:
+mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml  #sql映射文件位置
   configuration:
     #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射
@@ -18,5 +18,13 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: ASSIGN_ID
+
 employee:
   init-password: 123456
+#分页插件的配置
+pagehelper:
+  #配置四項 hprs
+  helper-dialect: mysql  #分页助手方言：mysql
+  params: count=countSql  #为了支持 startPage(Object params) 方法
+  support-methods-arguments: true  #支持通过 Mapper 接口参数来传递分页参数，默认值 false
+  reasonable: true #分页合理化参数，默认值为 false,页码不为负，不超总页码

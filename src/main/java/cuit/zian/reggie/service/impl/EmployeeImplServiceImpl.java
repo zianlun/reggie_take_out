@@ -1,5 +1,7 @@
 package cuit.zian.reggie.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import cuit.zian.reggie.mapper.EmployeeMapper;
 import cuit.zian.reggie.pojo.Employee;
 import cuit.zian.reggie.pojo.EmployeeExample;
@@ -30,6 +32,19 @@ public class EmployeeImplServiceImpl implements EmployeeService {
         Long employeeId = (long) Math.abs(UUID.randomUUID().hashCode());
         employee.setId(employeeId);
         return employeeMapper.insert(employee);
+    }
+
+    @Override
+    public PageInfo<Employee> queryEmployeeToPage(Integer pageNum, Integer pageSize, String name) {
+        PageHelper.startPage(pageNum, pageSize);
+        EmployeeExample example = new EmployeeExample();
+        EmployeeExample.Criteria criteria = example.createCriteria();
+        if(name != null){
+            criteria.andNameLike("%" + name + "%");
+        }
+        List<Employee> employees = employeeMapper.selectByExample(example);
+        PageInfo<Employee> pageInfo = new PageInfo<>(employees);
+        return pageInfo;
     }
 
 }

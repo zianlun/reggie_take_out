@@ -76,7 +76,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public Result<String> update(HttpServletRequest request, @RequestBody Employee employee){
+    public Result<String> addEmployee(HttpServletRequest request, @RequestBody Employee employee){
         log.info("员工信息: {}",employee);
         /*
         * 数据处理
@@ -96,5 +96,21 @@ public class EmployeeController {
             return Result.failed("创建员工失败");
         }
         return Result.success("添加员工成功");
+    }
+
+    @PutMapping
+    public Result<String> updateEmployee(HttpServletRequest request, @RequestBody Employee employee){
+        employee.setUpdateTime(new Date());
+        employee.setUpdateUser((Long)request.getSession().getAttribute("employeeId"));
+        int result = employeeService.updateEmployee(employee);
+        if(result <= 0){
+            return Result.failed("更新失败");
+        }
+        return Result.success("更新成功");
+    }
+
+    @GetMapping("{id}")
+    public Result<Employee> employeeInfo(@PathVariable Long id){
+        return Result.success(employeeService.queryEmployeeById(id));
     }
 }

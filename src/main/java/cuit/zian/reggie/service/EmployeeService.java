@@ -11,6 +11,9 @@ public interface EmployeeService {
 
     int saveEmployee(Employee employee);
 
-
     PageInfo<Employee> queryEmployeeToPage(Integer pageNum, Integer pageSize, String name);
+
+    int updateEmployee(Employee employee);
+
+    Employee queryEmployeeById(Long id);
 }

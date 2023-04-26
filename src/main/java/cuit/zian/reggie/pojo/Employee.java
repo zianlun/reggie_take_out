@@ -1,5 +1,7 @@
 package cuit.zian.reggie.pojo;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.ToString;
 
 import java.util.Date;

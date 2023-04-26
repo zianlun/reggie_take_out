@@ -143,7 +143,7 @@
           async init () {
             queryEmployeeById(this.id).then(res => {
               console.log(res)
-              if (String(res.code) === '1') {
+              if (String(res.code) === '200') {
                 console.log(res.data)
                 this.ruleForm = res.data
                 this.ruleForm.sex = res.data.sex === '0' ? '女' : '男'
@@ -162,7 +162,7 @@
                     sex: this.ruleForm.sex === '女' ? '0' : '1'
                   }
                   addEmployee(params).then(res => {
-                    if (res.code === 1) {
+                    if (res.code === 200) {
                       this.$message.success('员工添加成功！')
                       if (!st) {
                         this.goBack()
@@ -189,7 +189,7 @@
                     sex: this.ruleForm.sex === '女' ? '0' : '1'
                   }
                   editEmployee(params).then(res => {
-                    if (res.code === 1) {
+                    if (res.code === 200) {
                       this.$message.success('员工信息修改成功！')
                       this.goBack()
                     } else {

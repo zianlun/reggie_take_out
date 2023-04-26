@@ -40,11 +40,21 @@ public class EmployeeImplServiceImpl implements EmployeeService {
         EmployeeExample example = new EmployeeExample();
         EmployeeExample.Criteria criteria = example.createCriteria();
         if(name != null){
-            criteria.andNameLike("%" + name + "%");
+            criteria.andNameLike(name);
         }
         List<Employee> employees = employeeMapper.selectByExample(example);
         PageInfo<Employee> pageInfo = new PageInfo<>(employees);
         return pageInfo;
+    }
+
+    @Override
+    public int updateEmployee(Employee employee) {
+        return employeeMapper.updateByPrimaryKeySelective(employee);
+    }
+
+    @Override
+    public Employee queryEmployeeById(Long id) {
+        return employeeMapper.selectByPrimaryKey(id);
     }
 
 }

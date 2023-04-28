@@ -24,4 +24,15 @@ public class GlobalExceptionHandler {
         }
         return Result.failed(ResultCode.FAILED,"系统繁忙，请稍后再试");
     }
+
+    @ExceptionHandler(NullPointerException.class)
+    public Result handeleNullPointerException(NullPointerException exception){
+        log.error(exception.getMessage());
+        return Result.failed(ResultCode.FAILED,"系统繁忙，请稍后再试");
+    }
+
+    @ExceptionHandler(CustomException.class)
+    public Result handeleCustomException(CustomException exception){
+        return Result.failed(exception.getMessage());
+    }
 }

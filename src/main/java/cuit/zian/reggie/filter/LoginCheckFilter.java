@@ -1,6 +1,7 @@
 package cuit.zian.reggie.filter;
 
 import com.alibaba.fastjson.JSON;
+import cuit.zian.reggie.common.BaseContext;
 import cuit.zian.reggie.common.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
@@ -41,10 +42,14 @@ public class LoginCheckFilter implements Filter {
             log.info("{} 地址放行", uri);
             filterChain.doFilter(request, response);
         } else {
+            log.info("else----:  {} 的线程号为： {}", uri,Thread.currentThread());
             //4.判断是否登录
             if(request.getSession().getAttribute("employeeId") != null){
+                Long id = (Long)request.getSession().getAttribute("employeeId");
+                log.info("用户: {} 正在操作", id);
+                log.info("{} 的线程号为： {}", uri,Thread.currentThread());
+                BaseContext.setCurrentId(id);
                 filterChain.doFilter(request, response);
-                log.info("用户{}正在操作", request.getSession().getAttribute("employeeId"));
             }else{
                 //未登录，通过输出流向客户端响应数据
                 log.info("{}地址因为没有登录，被拦截", uri);
